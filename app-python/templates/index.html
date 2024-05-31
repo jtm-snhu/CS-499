@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="title">
+  R.A.I.N.
+</h1>
+<h2 class="subtitle">
+  Rescue Animal Inventory Navigator
+</h2>
+
+<h2><A href="{{ url_for('main.intake') }}">Intake Options</A></h2>
+<h2><A href="{{ url_for('main.reserve') }}">Reservation Options</A></h2>
+<h2><A href="{{ url_for('main.inventory') }}">Inventory Options</A></h2>
+
+{% endblock %}
