@@ -2,6 +2,8 @@
 
 {% block content %}
 <h1 class="title">Inventory options will appear here.</h1>
-<h2><A href = "/">Click here to return</A></h2>
+<h2><A href="{{ url_for('main.inventory_list') }}">Inventory List</A></h2>
+<!--<h2><A href="{{ url_for('main.monkey_inventory_list') }}">Monkey Inventory List</A></h2>-->
+<h2><A href = "/">Return Home</A></h2>
 
 {% endblock %}

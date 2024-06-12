@@ -5,11 +5,19 @@
   R.A.I.N.
 </h1>
 <h2 class="subtitle">
-  Rescue Animal Inventory Navigator
+  <b>R</b>escue <b>A</b>nimal <b>I</b>nventory <b>N</b>avigator
 </h2>
+<p>
+  <h1 class="title">
+  <A href="{{ url_for('main.inventory_list') }}">Please Log In To Continue</A>
+  </h1>
+</p>
 
+<!--
 <h2><A href="{{ url_for('main.intake') }}">Intake Options</A></h2>
 <h2><A href="{{ url_for('main.reserve') }}">Reservation Options</A></h2>
-<h2><A href="{{ url_for('main.inventory') }}">Inventory Options</A></h2>
+<h2><A href="{{ url_for('main.inventory_list') }}">Inventory Options</A></h2>
+<h2><A href="{{ url_for('sort_demo.sorting_demo') }}">Sort Algorithm Demo And Comparison</A></h2>
+-->
 
 {% endblock %}
