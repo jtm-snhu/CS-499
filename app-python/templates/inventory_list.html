@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="title has-text-centered">Current Animal Inventory</h1>
+
+        <!-- Flash messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="notification is-primary">
+                    {% for category, message in messages %}
+                        <div class="notification is-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <div class="content">
+            <form method="get" action="{{ url_for('main.inventory_list') }}" class="box">
+                <div class="columns is-multiline is-centered">
+                    <div class="column is-one-third">
+                        <div class="field has-text-centered">
+                            <label class="label">Name</label>
+                            <div class="control">
+                                <input class="input" type="text" name="name" placeholder="Search by name" value="{{ request.args.get('name', '') }}">
+                            </div>
+                        </div>
+                        <div class="field has-text-centered">
+                            <label class="label">Breed</label>
+                            <div class="control">
+                                <input class="input" type="text" name="breed" placeholder="Search by breed" value="{{ request.args.get('breed', '') }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column is-one-third">
+                        <div class="field has-text-centered">
+                            <label class="label">Gender</label>
+                            <div class="control">
+                                <div class="select is-fullwidth">
+                                    <select name="gender">
+                                        <option value="">Any</option>
+                                        <option value="Male" {% if request.args.get('gender') == 'Male' %}selected{% endif %}>Male</option>
+                                        <option value="Female" {% if request.args.get('gender') == 'Female' %}selected{% endif %}>Female</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field has-text-centered">
+                            <label class="label">Training Status</label>
+                            <div class="control">
+                                <div class="select is-fullwidth">
+                                    <select name="training_status">
+                                        <option value="">Any</option>
+                                        <option value="Trained" {% if request.args.get('training_status') == 'Trained' %}selected{% endif %}>Trained</option>
+                                        <option value="In Progress" {% if request.args.get('training_status') == 'In Progress' %}selected{% endif %}>In Progress</option>
+                                        <option value="Untrained" {% if request.args.get('training_status') == 'Untrained' %}selected{% endif %}>Untrained</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column is-one-third">
+                        <div class="field has-text-centered">
+                            <label class="label">In Service Country</label>
+                            <div class="control">
+                                <div class="select is-fullwidth">
+                                    <select name="in_service_country">
+                                        <option value="">Any</option>
+                                        <option value="USA" {% if request.args.get('in_service_country') == 'USA' %}selected{% endif %}>USA</option>
+                                        <option value="Canada" {% if request.args.get('in_service_country') == 'Canada' %}selected{% endif %}>Canada</option>
+                                        <option value="UK" {% if request.args.get('in_service_country') == 'UK' %}selected{% endif %}>UK</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field has-text-centered">
+                            <label class="label">Reserved</label>
+                            <div class="control">
+                                <div class="select is-fullwidth">
+                                    <select name="reserved">
+                                        <option value="">Any</option>
+                                        <option value="1" {% if request.args.get('reserved') == '1' %}selected{% endif %}>Yes</option>
+                                        <option value="0" {% if request.args.get('reserved') == '0' %}selected{% endif %}>No</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="columns is-centered">
+                    <div class="column is-one-third has-text-centered">
+                        <div class="field">
+                            <div class="control">
+                                <button class="button is-info is-fullwidth" type="submit">Search</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            {% if items %}
+            <div class="columns is-multiline">
+                {% for item in items %}
+                    <div class="column is-half">
+                        <div class="box">
+                            <article class="media">
+                                <div class="media-left">
+                                    <a href="{{ url_for('main.edit', id=item.id) }}" class="button is-info">ID: {{item.id}}</a>
+                                </div>
+                                <div class="media-content">
+                                    <div class="content has-text-dark">
+                                        <p style="text-align: left; width: 50%; display: inline-block;">
+                                            <strong>{{item.name}}</strong> [Rescue {{item.animal}}]
+                                            </p>
+                                            {% if item.reserved %}
+                                            <p class="has-text-danger" style="text-align: right; width: 49%; display: inline-block;">
+                                            <strong>[RESERVED]</strong>
+                                            </p>
+                                            {% else %} <p style="text-align: right; width: 49%; display: inline-block;"></p>
+                                            {% endif %}
+                                        
+                                        <p class="has-text-grey-dark">
+                                            [
+                                            <strong>Breed:</strong> {{item.breed}} | 
+                                            <strong>Gender:</strong> {{item.gender}} | 
+                                            <strong>Age:</strong> {{item.age}} |  
+                                            <strong>Weight:</strong> {{item.weight}} |
+                                            <strong>Height:</strong> {{item.height}} |
+                                            <strong>Tail Length:</strong> {{item.tail_length}} |
+                                            <strong>Body Length:</strong> {{item.body_length}}
+                                            ]
+                                        </p>
+                                        <p style="text-align: left; width: 49%; display: inline-block;">
+                                            <strong>Location:</strong> {{item.in_service_country}}
+                                            </p>
+                                            <p style="text-align: right; width: 50%; display: inline-block;">
+                                            <strong>Training:</strong> {{item.training_status}}
+                                        </p>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="notification is-warning">
+                No items match your search criteria.
+            </div>
+            {% endif %}
+        </div>
+        <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+            {{ pagination.links }}
+        </nav>
+    </div>
+{% endblock %}
