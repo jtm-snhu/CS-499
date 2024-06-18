@@ -1,4 +1,5 @@
 from random import randint
+from datetime import datetime
 from models import Animal
 
 def create_dogs(n):
@@ -14,7 +15,8 @@ def create_dogs(n):
             gender = 'Female'
         age = randint(2,20)
         weight = randint(2,50)
-        acquisition_date = f'{randint(1,30)}/{randint(1,12)}/{randint(2000, 2024)}'
+        rand_date = f'{randint(1,28)}/{randint(1,12)}/{randint(2000, 2024)}'
+        acquisition_date = datetime.strptime(rand_date, '%d/%m/%Y').date()
         acquisition_country = 'USA'
         training_status = 'Trained'
         reserved = False
@@ -57,7 +59,8 @@ def create_monkeys(n):
             gender = 'Female'
         age = randint(2,20)
         weight = randint(2,50)
-        acquisition_date = f'{randint(1,30)}/{randint(1,12)}/{randint(2000, 2024)}'
+        rand_date = f'{randint(1,28)}/{randint(1,12)}/{randint(2000, 2024)}'
+        acquisition_date = datetime.strptime(rand_date, '%d/%m/%Y').date()
         acquisition_country = 'United States'
         training_status = 'In Progress'
         reserved = False

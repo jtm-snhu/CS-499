@@ -21,51 +21,51 @@
                 {{ form.hidden_tag() }}
                 <div class="columns is-multiline is-centered">
                     <div class="column is-one-third">
-                        <div class="field has-text-centered">
+                        <div class="field">
                             {{ form.name.label(class="label has-text-dark") }}
                             <div class="control">
-                                {{ form.name(class="input has-text-dark has-background-light", placeholder="Search by name") }}
+                                {{ form.name(class="input has-text-dark has-background-light", placeholder="Search by name", value=filters.name) }}
                             </div>
                         </div>
-                        <div class="field has-text-centered">
+                        <div class="field">
                             {{ form.breed.label(class="label has-text-dark") }}
                             <div class="control">
-                                {{ form.breed(class="input has-background-light has-text-dark", placeholder="Search by breed") }}
+                                {{ form.breed(class="input has-background-light has-text-dark", placeholder="Search by breed", value=filters.breed) }}
                             </div>
                         </div>
                     </div>
                     <div class="column is-one-third">
-                        <div class="field has-text-centered">
+                        <div class="field">
                             {{ form.gender.label(class="label has-text-dark") }}
                             <div class="control">
                                 <div class="select is-fullwidth">
-                                    {{ form.gender(class="has-background-light has-text-dark") }}
+                                    {{ form.gender(class="has-background-light has-text-dark", value=filters.gender) }}
                                 </div>
                             </div>
                         </div>
-                        <div class="field has-text-centered">
+                        <div class="field">
                             {{ form.training_status.label(class="label has-text-dark") }}
                             <div class="control">
                                 <div class="select is-fullwidth">
-                                    {{ form.training_status(class="has-background-light has-text-dark") }}
+                                    {{ form.training_status(class="has-background-light has-text-dark", value=filters.training_status) }}
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="column is-one-third">
-                        <div class="field has-text-centered">
+                        <div class="field">
                             {{ form.in_service_country.label(class="label has-text-dark") }}
                             <div class="control">
                                 <div class="select is-fullwidth">
-                                    {{ form.in_service_country(class="has-background-light has-text-dark") }}
+                                    {{ form.in_service_country(class="has-background-light has-text-dark", value=filters.in_service_country) }}
                                 </div>
                             </div>
                         </div>
-                        <div class="field has-text-centered">
+                        <div class="field">
                             {{ form.reserved.label(class="label has-text-dark") }}
                             <div class="control">
                                 <div class="select is-fullwidth">
-                                    {{ form.reserved(class="has-background-light has-text-dark") }}
+                                    {{ form.reserved(class="has-background-light has-text-dark", value=filters.reserved) }}
                                 </div>
                             </div>
                         </div>
