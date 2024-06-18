@@ -85,32 +85,48 @@
             {% if items %}
             <div class="columns is-multiline">
                 {% for item in items %}
-                <div class="column is-one-third">
-                    <div class="box has-background-light" style="color: #000000;">
-                        <div class="level">
-                            <div class="level-left">
-                                <a href="{{ url_for('main.edit', id=item.id, page=request.args.get('page', 1)) }}" class="button is-link is-small">
-                                    ID: {{ item.id }}
-                                </a>
-                                <strong class="ml-2">{{ item.name }}</strong>
-                            </div>
-                            <div class="level-right">
-                                {% if item.reserved %}
-                                <span class="tag is-warning">RESERVED</span>
-                                {% endif %}
-                            </div>
+                    <div class="column is-half">
+                        <div class="box has-background-info-light">
+                            <article class="media">
+                                <div class="media-left">
+                                    <!--Passes current page number so edit can pass it back and put user on same page-->
+                                    <a href="{{ url_for('main.edit', id=item.id, page=request.args.get('page', 1)) }}" class="button is-link">ID: {{ item.id }}</a>
+                                </div>
+                                <div class="media-content">
+                                    <div class="content has-text-dark">
+                                        <p style="text-align: left; width: 50%; display: inline-block;" class="has-text-dark">
+                                            <strong>{{ item.name }}</strong> [Rescue {{ item.animal }}]
+                                        </p>
+                                        {% if item.reserved %}
+                                        <p class="has-text-danger" style="text-align: right; width: 49%; display: inline-block;">
+                                            <strong>[RESERVED]</strong>
+                                        </p>
+                                        {% else %}
+                                        <!--blank filler if not reserved to preserve alignment-->
+                                        <p style="text-align: right; width: 49%; display: inline-block;"></p>
+                                        {% endif %}
+                                        <p class="has-text-dark">
+                                            [
+                                            <strong>Breed:</strong> {{ item.breed }} | 
+                                            <strong>Gender:</strong> {{ item.gender }} | 
+                                            <strong>Age:</strong> {{ item.age }} |  
+                                            <strong>Weight:</strong> {{ item.weight }} |
+                                            <strong>Height:</strong> {{ item.height }} |
+                                            <strong>Tail Length:</strong> {{ item.tail_length }} |
+                                            <strong>Body Length:</strong> {{ item.body_length }}
+                                            ]
+                                        </p>
+                                        <p class="has-text-dark" style="text-align: left; width: 49%; display: inline-block;">
+                                            <strong>Location:</strong> {{ item.in_service_country }}
+                                        </p>
+                                        <p class="has-text-dark" style="text-align: right; width: 50%; display: inline-block;">
+                                            <strong>Training:</strong> {{ item.training_status }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </article>
                         </div>
-                        <p><strong>Breed:</strong> {{ item.breed }}</p>
-                        <p><strong>Gender:</strong> {{ item.gender }}</p>
-                        <p><strong>Age:</strong> {{ item.age }}</p>
-                        <p><strong>Weight:</strong> {{ item.weight }}</p>
-                        <p><strong>Height:</strong> {{ item.height }}</p>
-                        <p><strong>Tail Length:</strong> {{ item.tail_length }}</p>
-                        <p><strong>Body Length:</strong> {{ item.body_length }}</p>
-                        <p><strong>Location:</strong> {{ item.in_service_country }}</p>
-                        <p><strong>Training:</strong> {{ item.training_status }}</p>
                     </div>
-                </div>
                 {% endfor %}
             </div>
             {% else %}

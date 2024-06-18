@@ -1,0 +1,33 @@
+/* Custom CSS to override some bulma defaults */
+
+
+/* Ensure the entire page background is set */
+html, body {
+    background-color: #111725 !important; /* Light blue background color */
+}
+
+/* Apply background color to the hero section */
+.hero.is-primary {
+    background-color: #111725 !important; /* Light blue background color */
+}
+
+
+/* Change the form placeholder text color */
+::placeholder {
+    color: rgb(180, 180, 180) !important; /* Replace with your desired color */
+}
+
+/* Ensure strong tags inherit the text color from the parent element */
+p.has-text-dark strong, p.has-text-grey-dark strong, p.has-text-danger strong {
+    color: inherit;
+}
+
+/* Ensure all text within strong tags is black */
+strong {
+    color: #000000;
+}
+
+/* Ensure general text color for items is black */
+.box p {
+    color: #000000;
+}

@@ -60,7 +60,7 @@ class Animal(db.Model):
     gender = db.Column(db.String(10))
     age = db.Column(db.Integer)
     weight = db.Column(db.Integer)
-    acquisition_date = db.Column(db.String(10))
+    acquisition_date = db.Column(db.DateTime)
     acquisition_country = db.Column(db.String(100))
     training_status = db.Column(db.String(40))
     reserved = db.Column(db.Boolean)

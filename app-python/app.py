@@ -1,6 +1,7 @@
 from random import randint
 from flask import Flask
 from flask_login import LoginManager
+from flask_wtf.csrf import CSRFProtect
 from demo_data import create_dogs, create_monkeys
 
 #Database and model declarations separated to avoid
@@ -16,8 +17,9 @@ db_uri = 'sqlite:///rescue_animals.db'
 
 def create_app():
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = 'secret-key-goes-here'
+    app.config['SECRET_KEY'] = 'secret-key-goes-here' # This should be random and not stored in source code
     app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
+    csrf = CSRFProtect(app)
 
     # Initialize database object
     db.init_app(app)

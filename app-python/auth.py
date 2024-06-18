@@ -2,59 +2,74 @@ from flask import Blueprint, render_template, redirect, url_for, request, flash
 from flask_login import login_user, login_required, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import User
+from forms import LoginForm, SignupForm
 from database import db
+
 
 auth = Blueprint('auth', __name__)
 
 #Route to login page
 @auth.route('/login')
 def login():
-    return render_template('login.html')
+    form = LoginForm()
+    return render_template('login.html', form=form)
 
-#Route for login form submission (POST)
 @auth.route('/login', methods=['POST'])
 def login_post():
-    email = request.form.get('email')
-    password = request.form.get('password')
-    remember = True if request.form.get('remember') else False
+    form = LoginForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        password = form.password.data
+        remember = form.remember.data
 
-    user = User.query.filter_by(email=email).first()
+        user = User.query.filter_by(email=email).first()
 
-    #User must exist and password hash must match
-    #Redirect back to login if either is bad
-    if not user or not check_password_hash(user.password, password):
-        flash('Please check your login details and try again.')
-        return redirect(url_for('auth.login'))
-    
-    #If we get here, user check passed. Log in.
-    login_user(user, remember=remember)
-    return redirect(url_for('main.inventory_list'))
+        # User must exist and password hash must match
+        if not user or not check_password_hash(user.password, password):
+            flash('Please check your login details and try again.', 'danger')
+            return redirect(url_for('auth.login'))
+
+        # If we get here, user check passed. Log in.
+        login_user(user, remember=remember)
+        return redirect(url_for('main.inventory_list'))
+
+    flash('Invalid form submission. Please try again.', 'danger')
+    return redirect(url_for('auth.login'))
 
 #Route to signup page
 @auth.route('/signup')
 def signup():
-    return render_template('signup.html')
+    form = SignupForm()
+    return render_template('signup.html', form=form)
 
-#Route for signup form submission (POST)
 @auth.route('/signup', methods=['POST'])
 def signup_post():
-    email = request.form.get('email')
-    name = request.form.get('name')
-    password = request.form.get('password')
+    form = SignupForm()
+    if form.validate_on_submit():
+        email = form.email.data
+        name = form.name.data
+        password = form.password.data
 
-    #Check to see if user already exists
-    #Return to signup page if true
-    user = User.query.filter_by(email=email).first()
-    if user:
-        flash('That Email address already exists')
-        return redirect(url_for('auth.signup'))
-    
-    #If new user, hash password and add to db
-    new_user = User(email=email, name=name, password=generate_password_hash(password))
-    db.session.add(new_user)
-    db.session.commit()
+        # Check to see if user already exists
+        if User.query.filter_by(email=email).first():
+            flash('That email address already exists.', 'danger')
+            return redirect(url_for('auth.signup'))
 
-    return redirect(url_for('auth.login'))
+        # If new user, hash password and add to db
+        try:
+            new_user = User(email=email, name=name, password=generate_password_hash(password))
+            db.session.add(new_user)
+            db.session.commit()
+            flash('Signup successful! Please log in.', 'success')
+        except Exception as e:
+            db.session.rollback()
+            flash(f'An error occurred: {str(e)}', 'danger')
+            return redirect(url_for('auth.signup'))
+
+        return redirect(url_for('auth.login'))
+
+    flash('Invalid form submission. Please try again.', 'danger')
+    return redirect(url_for('auth.signup'))
 
 @auth.route('/logout')
 @login_required
