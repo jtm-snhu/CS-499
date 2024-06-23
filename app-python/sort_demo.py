@@ -5,6 +5,7 @@ import time
 
 sort_demo = Blueprint('sort_demo', __name__)
 
+# Route to sort performance comparison
 @sort_demo.route('/sort_demo')
 def sorting_demo():
     result_times = []
@@ -26,10 +27,6 @@ def sorting_demo():
     #Pivot sort
     data_copy = demo_data[:]
     result_times.append(measure_time(pivot_sort, data_copy))
-
-    #print(f"Timsort Time: {timsort_time:.6f} seconds")
-    #print(f"Merge Sort Time: {merge_sort_time:.6f} seconds")
-    #print(f"Quick Sort Time: {pivot_sort_time:.6f} seconds")
 
     return render_template('sort_demo.html', result_times=result_times)
 

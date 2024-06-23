@@ -1,14 +1,14 @@
 /* Custom CSS to override some bulma defaults */
 
 
-/* Ensure the entire page background is set */
+/* Ensure the entire page background is set #111725 95,95,95 */
 html, body {
-    background-color: #111725 !important; /* Light blue background color */
+    background-color: #4e5d63 !important; /* Dark blue background color */
 }
 
 /* Apply background color to the hero section */
 .hero.is-primary {
-    background-color: #111725 !important; /* Light blue background color */
+    background-color: #4e5d63 !important; /* Dark blue background color */
 }
 
 

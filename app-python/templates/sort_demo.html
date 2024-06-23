@@ -1,54 +1,58 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section class="section">
-  <div class="container">
-    <h1 class="title has-text-centered">
-      R.A.I.N.
-    </h1>
-    <h2 class="subtitle has-text-centered">
-      Search Method Demonstration
-    </h2>
+<section class="section mt-0 pt-0">
+    <div class="container">
+        <h1 class="title has-text-centered has-text-light">
+            R.A.I.N.
+        </h1>
+        <h2 class="subtitle has-text-centered has-text-light">
+            Sort Method Performance Demonstration
+        </h2>
 
-    <div class="content">
-      <p>
-        A list of 100k animal objects was created and randomized to test three of the most popular
-        sorting algorithms. Each sort algorithm was started with a copy of the randomized list to
-        ensure that all tests were run with the exact same data. Refresh this page to generate new data and results.
-      </p>
-    </div>
+        <div class="content box has-text-left has-background-info-light">
+            <p>
+                A list of 100k animal objects was created and mixed into a randomized order to test three of the most popular
+                sorting algorithms. Each sort algorithm was started with its own copy of the original randomized list to
+                ensure that all tests were run with the exact same data. Refresh this page to generate new data and results.
+            </p>
+        </div>
 
-    <h3 class="title is-4">Sort Result Times</h3>
-    <div class="table-container">
-      <table class="table is-striped is-hoverable is-fullwidth">
-        <thead>
-          <tr>
-            <th>Sort Method</th>
-            <th>Sort Time In Seconds</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Python Timsort</td>
-            <td>{{result_times[0]}}</td>
-          </tr>
-          <tr>
-            <td>Merge Sort</td>
-            <td>{{result_times[1]}}</td>
-          </tr>
-          <tr>
-            <td>Pivot Sort</td>
-            <td>{{result_times[2]}}</td>
-          </tr>
-        </tbody>
-      </table>
+        <h3 class="title is-4 has-text-light">Sort Result Times</h3>
+        <div class="content box has-background-info-light">
+            <div class="columns">
+                <div class="column is-one-third has-text-dark">
+                    <strong>Sort Method</strong>
+                </div>
+                <div class="column is-two-thirds has-text-dark">
+                    <strong>Sort Time In Seconds</strong>
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column is-one-third has-text-dark">
+                    Python Timsort
+                </div>
+                <div class="column is-two-thirds has-text-dark">
+                    {{ result_times[0] }}
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column is-one-third has-text-dark">
+                    Merge Sort
+                </div>
+                <div class="column is-two-thirds has-text-dark">
+                    {{ result_times[1] }}
+                </div>
+            </div>
+            <div class="columns">
+                <div class="column is-one-third has-text-dark">
+                    Pivot Sort
+                </div>
+                <div class="column is-two-thirds has-text-dark">
+                    {{ result_times[2] }}
+                </div>
+            </div>
+        </div>
     </div>
-
-    <div class="buttons are-medium is-centered">
-      <a class="button is-link" href="{{ url_for('main.intake') }}">Intake Options</a>
-      <a class="button is-link" href="{{ url_for('main.reserve') }}">Reservation Options</a>
-      <a class="button is-link" href="{{ url_for('main.inventory') }}">Inventory Options</a>
-    </div>
-  </div>
 </section>
 {% endblock %}

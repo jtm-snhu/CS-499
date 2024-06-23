@@ -3,7 +3,7 @@
 {% block content %}
 <section class="section mt-0 pt-0">
     <div class="container">
-        <h1 class="title has-text-centered has-text-light">Edit Animal ID: {{ item.id }}</h1>
+        <h1 class="title has-text-centered has-text-light">New Animal Intake</h1>
         <form method="post" class="box has-background-info-light">
             {{ form.hidden_tag() }}
             <div class="columns is-multiline">
@@ -11,13 +11,13 @@
                     <div class="field">
                         {{ form.name.label(class="label has-text-dark") }}
                         <div class="control">
-                            {{ form.name(class="input has-text-dark has-background-light") }}
+                            {{ form.name(placeholder="Required Field", class="input has-text-dark has-background-light") }}
                         </div>
                     </div>
                     <div class="field">
                         {{ form.animal.label(class="label has-text-dark") }}
                         <div class="control">
-                            {{ form.animal(class="input has-text-dark has-background-light") }}
+                            {{ form.animal(placeholder="Required Field", class="input has-text-dark has-background-light") }}
                         </div>
                     </div>
                     <div class="field">
@@ -109,7 +109,7 @@
             <div class="columns">
                 <div class="column is-half is-flex is-justify-content-flex-start">
                     <div class="control">
-                        <a class="button is-light" href="{{ url_for('main.inventory_list', page=page) }}">Cancel</a>
+                        <a class="button is-light" href="{{ url_for('main.inventory_list') }}">Cancel</a>
                     </div>
                 </div>
                 <div class="column is-half is-flex is-justify-content-flex-end">
@@ -119,20 +119,6 @@
                 </div>
             </div>
         </form>
-        <div class="columns">
-            <div class="column is-full is-flex is-justify-content-center">
-                <form method="post" action="{{ url_for('main.delete', id=item.id, page=page) }}" onsubmit="return confirmDelete();">
-                    {{ form.hidden_tag() }}
-                    <button type="submit" class="button is-danger">Delete This Record</button>
-                </form>
-            </div>
-        </div>
     </div>
 </section>
-
-<script>
-    function confirmDelete() {
-        return confirm('Are you sure you want to delete this record?');
-    }
-</script>
 {% endblock %}

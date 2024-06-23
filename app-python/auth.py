@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, request, flash
+from flask import Blueprint, render_template, redirect, url_for, flash
 from flask_login import login_user, login_required, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import User
@@ -8,12 +8,13 @@ from database import db
 
 auth = Blueprint('auth', __name__)
 
-#Route to login page
+# Route to login page
 @auth.route('/login')
 def login():
     form = LoginForm()
     return render_template('login.html', form=form)
 
+# Route to login form submission
 @auth.route('/login', methods=['POST'])
 def login_post():
     form = LoginForm()
@@ -36,12 +37,13 @@ def login_post():
     flash('Invalid form submission. Please try again.', 'danger')
     return redirect(url_for('auth.login'))
 
-#Route to signup page
+# Route to signup page
 @auth.route('/signup')
 def signup():
     form = SignupForm()
     return render_template('signup.html', form=form)
 
+# Signup page form submission
 @auth.route('/signup', methods=['POST'])
 def signup_post():
     form = SignupForm()
@@ -56,6 +58,7 @@ def signup_post():
             return redirect(url_for('auth.signup'))
 
         # If new user, hash password and add to db
+        # Catch database exceptions
         try:
             new_user = User(email=email, name=name, password=generate_password_hash(password))
             db.session.add(new_user)
@@ -66,11 +69,14 @@ def signup_post():
             flash(f'An error occurred: {str(e)}', 'danger')
             return redirect(url_for('auth.signup'))
 
+        # Log new user out so they must sign in to continue
+        logout_user()
         return redirect(url_for('auth.login'))
 
     flash('Invalid form submission. Please try again.', 'danger')
     return redirect(url_for('auth.signup'))
 
+# Route to log user out
 @auth.route('/logout')
 @login_required
 def logout():

@@ -1,36 +1,44 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="column is-4 is-offset-4">
-    <h3 class="title has-text-light">Login</h3>
-    <div class="box">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <div class="notification is-{{ messages[0][0] }}">
-                {{ messages[0][1] }}
+<section class="section mt-0 pt-0">
+    <div class="container">
+        <div class="column is-4 is-offset-4">
+            <h3 class="title has-text-centered has-text-light">Login</h3>
+            <div class="box has-background-info-light">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="notification is-{{ messages[0][0] }}">
+                        {{ messages[0][1] }}
+                    </div>
+                {% endif %}
+                {% endwith %}
+                <form method="POST" action="{{ url_for('auth.login') }}">
+                    {{ form.hidden_tag() }}
+                    <div class="field">
+                        <div class="control">
+                            {{ form.email(class="input has-text-dark has-background-light is-large") }}
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            {{ form.password(class="input has-text-dark has-background-light is-large") }}
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="checkbox has-text-dark">
+                            {{ form.remember() }}
+                            {{ form.remember.label.text }}
+                        </label>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            {{ form.submit(class="button is-link is-fullwidth") }}
+                        </div>
+                    </div>
+                </form>
             </div>
-        {% endif %}
-        {% endwith %}
-        <form method="POST" action="{{ url_for('auth.login') }}">
-            {{ form.hidden_tag() }}
-            <div class="field">
-                <div class="control">
-                    {{ form.email(class="input is-large") }}
-                </div>
-            </div>
-            <div class="field">
-                <div class="control">
-                    {{ form.password(class="input is-large") }}
-                </div>
-            </div>
-            <div class="field">
-                <label class="checkbox">
-                    {{ form.remember() }}
-                    {{ form.remember.label.text }}
-                </label>
-            </div>
-            {{ form.submit() }}
-        </form>
+        </div>
     </div>
-</div>
+</section>
 {% endblock %}
