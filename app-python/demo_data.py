@@ -18,7 +18,12 @@ def create_dogs(n):
         rand_date = f'{randint(1,28)}/{randint(1,12)}/{randint(2000, 2024)}'
         acquisition_date = datetime.strptime(rand_date, '%d/%m/%Y').date()
         acquisition_country = 'USA'
-        training_status = 'Trained'
+        if i%3 == 0:
+            training_status = 'Trained'
+        elif i%2 == 0:
+            training_status = 'In Progress'
+        else:
+            training_status = 'Untrained'
         reserved = False
         if i%3 == 0:
             in_service_country = 'UK'
@@ -61,10 +66,20 @@ def create_monkeys(n):
         weight = randint(2,50)
         rand_date = f'{randint(1,28)}/{randint(1,12)}/{randint(2000, 2024)}'
         acquisition_date = datetime.strptime(rand_date, '%d/%m/%Y').date()
-        acquisition_country = 'United States'
-        training_status = 'In Progress'
+        acquisition_country = 'UK'
+        if i%3 == 0:
+            training_status = 'Trained'
+        elif i%2 == 0:
+            training_status = 'In Progress'
+        else:
+            training_status = 'Untrained'
         reserved = False
-        in_service_country = 'United States'
+        if i%3 == 0:
+            in_service_country = 'UK'
+        elif i%2 == 0:
+            in_service_country = 'Canada'
+        else:
+            in_service_country = 'USA'
         breed = f'breed{i}'
         height = randint(6,28)
         tail_length = randint(2,36)
@@ -93,8 +108,7 @@ def create_monkeys(n):
     return monkeys
 
 
-#Create n list for search demo
-#n should be an even number
+#Create 100k list for sort comparison
 def create_search_data():
     demo_list = []
     for item in create_dogs(50000):

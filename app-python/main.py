@@ -1,14 +1,16 @@
 from flask import Blueprint, render_template, current_app, request, redirect, url_for, flash
 from flask_login import login_required, current_user
 from flask_paginate import Pagination, get_page_parameter
-from markupsafe import Markup
-from models import Dog, Monkey, Animal
+#from markupsafe import Markup
+from models import Animal
 from forms import InventorySearchForm, AnimalEditForm
 from database import db
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 main = Blueprint('main', __name__)
 
+# Root sends authenticated users to inventory page
+# and unauthenticated to login page
 @main.route('/')
 def index():
     # Authenticated users go to main inventory page
@@ -17,21 +19,48 @@ def index():
     # Unauthenticated are taken to login page
     return redirect(url_for('auth.login'))
 
-@main.route('/profile')
+
+# Add a new animal to inventory
+# Returns new ID through flash message
+@main.route('/intake', methods=['GET', 'POST'])
 @login_required
-def profile():
-    return render_template('profile.html')
-
-@main.route('/intake')
 def intake():
-    return render_template('intake.html')
+    form = AnimalEditForm()
+    if form.validate_on_submit():
+        reserved_value = form.reserved.data == '1'  # Convert to boolean
+        new_animal = Animal(
+            name=form.name.data,
+            animal=form.animal.data,
+            breed=form.breed.data,
+            gender=form.gender.data,
+            age=form.age.data,
+            weight=form.weight.data,
+            height=form.height.data,
+            body_length=form.body_length.data,
+            tail_length=form.tail_length.data,
+            training_status=form.training_status.data,
+            acquisition_date=form.acquisition_date.data,
+            acquisition_country=form.acquisition_country.data,
+            in_service_country=form.in_service_country.data,
+            reserved=reserved_value  # Use the converted value from above
+        )
+        # Catch database errors
+        try:
+            db.session.add(new_animal)
+            db.session.commit()
+            flash(f'New animal has been added with ID {new_animal.id}!', 'success')
+            return redirect(url_for('main.inventory_list'))
+        except SQLAlchemyError as e:
+            db.session.rollback()  # Rollback the session to revert changes
+            flash(f'An error occurred while adding the animal: {str(e)}', 'danger')
+    else:
+        for field, errors in form.errors.items():
+            for error in errors:
+                flash(f"Error in {getattr(form, field).label.text}: {error}", 'danger')
+    return render_template('intake.html', form=form)
 
-@main.route('/reserve')
-def reserve():
-    return render_template('reserve.html')
 
-
-
+# Apply search filters to query
 def apply_filters(query, filters):
     if filters.get('name'):
         query = query.filter(Animal.name.contains(filters['name']))
@@ -47,6 +76,8 @@ def apply_filters(query, filters):
         query = query.filter(Animal.reserved == (filters['reserved'] == '1'))
     return query
 
+
+# Show the main inventory list (Home page)
 @main.route('/inventory', methods=['GET', 'POST'])
 @login_required
 def inventory_list():
@@ -64,6 +95,7 @@ def inventory_list():
 
     query = apply_filters(query, filters)
     
+    # Pagination information to generate page numbers
     page = request.args.get(get_page_parameter(), type=int, default=1)
     per_page = 6
     pagination = query.paginate(page=page, per_page=per_page, error_out=False)
@@ -73,6 +105,9 @@ def inventory_list():
     return render_template('inventory_list.html', items=items, pagination=pagination_info, form=form, filters=filters)
 
 
+# Display and process edit form for individual animal
+# Accepts page number argument to return user to
+# the inventory page they came from.
 @main.route('/edit/<int:id>', methods=['GET', 'POST'])
 @login_required
 def edit(id):
@@ -85,8 +120,10 @@ def edit(id):
 
     if form.validate_on_submit():
         if form.submit.data:
+            # Catch database errors
             try:
                 form.populate_obj(item)
+                # Convert reserved value to boolean
                 item.reserved = form.reserved.data == '1'
                 db.session.commit()
                 flash('Item updated successfully', 'success')
@@ -110,6 +147,8 @@ def edit(id):
     return render_template('edit.html', form=form, item=item, page=page)
 
 
+# Delete a single animal. ID passed from edit page.
+# Accepts page number to return user to inventory page they came from
 @main.route('/delete/<int:id>', methods=['POST'])
 @login_required
 def delete(id):
@@ -123,27 +162,3 @@ def delete(id):
         db.session.rollback()
         flash(f'Error deleting item: {str(e)}', 'danger')
     return redirect(url_for('main.inventory_list', page=page))
-
-'''
-#Dog Inventory List
-@main.route('/inventory/dogs')
-def dog_inventory_list():
-    page = request.args.get(get_page_parameter(), type=int, default=1)
-    per_page = 5
-    pagination = Dog.query.paginate(page=page, per_page=per_page, error_out=False)
-    items = pagination.items
-    pagination_info = Pagination(page=page, total=pagination.total, per_page=per_page, record_name='items', css_framework='bulma')
-
-    return render_template('inventory_list.html', items=items, pagination=pagination_info)
-
-#Monkey Inventory List
-@main.route('/inventory/monkeys')
-def monkey_inventory_list():
-    page = request.args.get(get_page_parameter(), type=int, default=1)
-    per_page = 5
-    pagination = Monkey.query.paginate(page=page, per_page=per_page, error_out=False)
-    items = pagination.items
-    pagination_info = Pagination(page=page, total=pagination.total, per_page=per_page, record_name='items', css_framework='bulma')
-
-    return render_template('inventory_list.html', items=items, pagination=pagination_info)
-'''

@@ -14,7 +14,7 @@
     <section class="hero is-primary is-fullheight">
 
         <div class="hero-head">
-            <nav class="navbar">
+            <nav class="navbar is-link mb-0 pb-0">
                 <div class="container">
                     <div id="navbarMenuHeroA" class="navbar-menu">
                         <div class="navbar-end">
@@ -22,8 +22,8 @@
                                 Home
                             </a>
                             {% if current_user.is_authenticated %}
-                            <a href="{{ url_for('main.profile') }}" class="navbar-item has-text-light">
-                                Profile
+                            <a href="{{ url_for('main.intake') }}" class="navbar-item has-text-light">
+                                Intake
                             </a>
                             {% endif %}
                             {% if not current_user.is_authenticated %}
@@ -34,6 +34,9 @@
                                 Sign Up
                             </a>
                             {% endif %}
+                            <a href="/sort_demo" class="navbar-item has-text-light">
+                                Sort Demo
+                            </a>
                             {% if current_user.is_authenticated %}
                             <a href="{{ url_for('auth.logout') }}" class="navbar-item has-text-light">
                                 Logout
@@ -45,7 +48,7 @@
             </nav>
         </div>
 
-        <div class="hero-body">
+        <div class="hero-body mt-0 pt-0">
             <div class="container has-text-centered">
                {% block content %}
                {% endblock %}

@@ -17,17 +17,18 @@
         {% endwith %}
 
         <div class="content">
+            <!-- Search filters form -->
             <form method="get" action="{{ url_for('main.inventory_list') }}" class="box has-background-info-light">
                 {{ form.hidden_tag() }}
                 <div class="columns is-multiline is-centered">
                     <div class="column is-one-third">
-                        <div class="field has-text-centered">
+                        <div class="field has-text-left">
                             {{ form.name.label(class="label has-text-dark") }}
                             <div class="control">
                                 {{ form.name(class="input has-text-dark has-background-light", placeholder="Search by name") }}
                             </div>
                         </div>
-                        <div class="field has-text-centered">
+                        <div class="field has-text-left">
                             {{ form.breed.label(class="label has-text-dark") }}
                             <div class="control">
                                 {{ form.breed(class="input has-background-light has-text-dark", placeholder="Search by breed") }}
@@ -35,7 +36,7 @@
                         </div>
                     </div>
                     <div class="column is-one-third">
-                        <div class="field has-text-centered">
+                        <div class="field has-text-left">
                             {{ form.gender.label(class="label has-text-dark") }}
                             <div class="control">
                                 <div class="select is-fullwidth">
@@ -43,7 +44,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="field has-text-centered">
+                        <div class="field has-text-left">
                             {{ form.training_status.label(class="label has-text-dark") }}
                             <div class="control">
                                 <div class="select is-fullwidth">
@@ -53,7 +54,7 @@
                         </div>
                     </div>
                     <div class="column is-one-third">
-                        <div class="field has-text-centered">
+                        <div class="field has-text-left">
                             {{ form.in_service_country.label(class="label has-text-dark") }}
                             <div class="control">
                                 <div class="select is-fullwidth">
@@ -61,7 +62,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="field has-text-centered">
+                        <div class="field has-text-left">
                             {{ form.reserved.label(class="label has-text-dark") }}
                             <div class="control">
                                 <div class="select is-fullwidth">
@@ -81,12 +82,12 @@
                     </div>
                 </div>
             </form>
-
+            <!-- Inventory Listing -->
             {% if items %}
             <div class="columns is-multiline">
                 {% for item in items %}
                 <div class="column is-one-third">
-                    <div class="box has-background-light" style="color: #000000;">
+                    <div class="box has-background-light" style="color: #000000;" title="Click ID To Edit">
                         <div class="level">
                             <div class="level-left">
                                 <a href="{{ url_for('main.edit', id=item.id, page=request.args.get('page', 1)) }}" class="button is-link is-small">
@@ -100,15 +101,22 @@
                                 {% endif %}
                             </div>
                         </div>
-                        <p><strong>Breed:</strong> {{ item.breed }}</p>
-                        <p><strong>Gender:</strong> {{ item.gender }}</p>
-                        <p><strong>Age:</strong> {{ item.age }}</p>
-                        <p><strong>Weight:</strong> {{ item.weight }}</p>
-                        <p><strong>Height:</strong> {{ item.height }}</p>
-                        <p><strong>Tail Length:</strong> {{ item.tail_length }}</p>
-                        <p><strong>Body Length:</strong> {{ item.body_length }}</p>
-                        <p><strong>Location:</strong> {{ item.in_service_country }}</p>
-                        <p><strong>Training:</strong> {{ item.training_status }}</p>
+                        <div class="columns">
+                            <div class="column is-half has-text-left">
+                                <p><strong>Animal:</strong> {{ item.animal }}</p>
+                                <p><strong>Breed:</strong> {{ item.breed }}</p>
+                                <p><strong>Gender:</strong> {{ item.gender }}</p>
+                                <p><strong>Age:</strong> {{ item.age }}</p>
+                                <p><strong>Weight:</strong> {{ item.weight }}</p>
+                            </div>
+                            <div class="column is-half has-text-left">
+                                <p><strong>Height:</strong> {{ item.height }}</p>
+                                <p><strong>Tail Length:</strong> {{ item.tail_length }}</p>
+                                <p><strong>Body Length:</strong> {{ item.body_length }}</p>
+                                <p><strong>Location:</strong> {{ item.in_service_country }}</p>
+                                <p><strong>Training:</strong> {{ item.training_status }}</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 {% endfor %}
@@ -119,6 +127,7 @@
             </div>
             {% endif %}
         </div>
+        <!-- Generated pagination links -->
         <nav class="pagination is-centered" role="navigation" aria-label="pagination">
             {{ pagination.links }}
         </nav>
