@@ -25,4 +25,4 @@ flask --debug run
 
 You should then be able to see the application in your web browser by going to http://127.0.0.1:5000/
 
-With a new intallation, the database and demo data will be created automatically. Click the signup link to create a user, then log in using those credentials to explore the application.
+With a new installation, the database and demo data will be created automatically. Click the signup link to create a user, then log in using those credentials to explore the application.
